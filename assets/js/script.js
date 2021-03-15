@@ -91,6 +91,54 @@ $("#remove-tasks").on("click", function() {
   saveTasks();
 });
 
+$(".list-group").on("click", "p", function() {
+  var text = $(this)
+  // get the text in the p (through the keyword this) tag
+  .text()
+  // trims it
+  .trim();
+
+  console.log("the text content of the p tag is printed after being clicked" + text)
+
+  // create a new element <textarea>
+  var textInput = $("<textarea>")
+  // assign a class to that element
+  .addClass("form-control")
+  // assign the content of the text variable to the textarea
+  .val(text);
+
+  // the newly created textarea element replaces the p element that was there originally
+  $(this).replaceWith(textInput);
+  textInput.trigger("focus");
+});
+
+$(".list-group").on("blur", "textarea", function() {
+  // get the textarea's current value/text
+  var text = $(this)
+  .val()
+  .trim();
+
+  // get the parent ul's id attribute
+  var status = $(this)
+  .closest(".list-group")
+  .attr("id")
+  .replace("list-", "");
+
+  // get the task's position in the list of other li elements
+  var index = $(this)
+  .closest(".list-group-item")
+  .index();
+
+  // recreate p element
+  var taskP = $("<p>")
+  .addClass("m-1")
+  .text(text);
+
+  // replace textarea with p element
+  $(this).replaceWith(taskP);
+
+});
+
 // load tasks for the first time
 loadTasks();
 
